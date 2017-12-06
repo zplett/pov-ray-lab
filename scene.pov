@@ -58,25 +58,39 @@ plane { z, 50
 #declare P11= <5.5, 0, 5.5>;
 #declare P12= <5.125, 0, 5.125>;
 
-#declare P13 = <-4, 0, -4>;
-#declare P14 = < -3.5, 0, -3.5>;
-#declare P15 = < -3, 0, -3>;
-#declare P16 = < -2.5, 0, -2.5>;
-#declare P17 = < -2, 0, -2>;
-#declare P18 = < -1.5, 0, -1.5>;
-#declare P19 = < -1, 0, -1>;
-#declare P20 = < -0.5, 0, -0.5>;
-#declare P21 = < 1, 0, 1>;
-#declare P22 = < 2.5, 0, 2.5>;
-#declare P23 = < 4.5, 0, 4.5>;
-#declare P24 = <7, 0, 7>;
-#declare P25 = <10, 0, 10>;
+#declare P13 = <-1, 0, -4>;
+#declare P14 = < -0.8, 0, -3.5>;
+#declare P15 = < -0.6, 0, -3>;
+#declare P16 = < -0.4, 0, -2.5>;
+#declare P17 = < -0.2, 0, -2>;
+#declare P18 = < 0, 0, -1.5>;
+#declare P19 = < 0.2, 0, -1>;
+#declare P20 = < 0.4, 0, -0.5>;
+#declare P21 = < 0.6, 0, 1>;
+#declare P22 = < 0.8, 0, 2.5>;
+#declare P23 = < 1, 0, 4.5>;
+#declare P24 = <1.2, 0, 7>;
+#declare P25 = <1.4, 0, 10>;
+
+#declare P26 = <-30, 0, 20>;
+#declare P27 = < -20, 0, 14>;
+#declare P28 = < -15, 0, 12>;
+#declare P29 = < -7.5, 0, 10>;
+#declare P30 = < -5, 0, 8.5>;
+#declare P31 = < -4, 0, 6>;
+#declare P32 = < -3.5, 0, 3.5>;
+#declare P33 = < -3, 0, 1.5>;
+#declare P34 = < -2.5, 0, -1>;
+#declare P35 = < -2, 0, -3>;
+#declare P36 = < -1.5, 0, -4>;
+#declare P37 = < -1, 0, -4.5>;
+#declare P38 = < -0.5, 0, -4.75>;
 
 #declare Spline_1 =
   spline {
     natural_spline
-   -0.100, P0, // control point
-    0.000, P1, // starting point
+   -0.100, P0, 
+    0.000, P1, 
     0.100, P2,
     0.200, P3,
     0.300, P4,
@@ -86,15 +100,15 @@ plane { z, 50
     0.700, P8,
     0.800, P9,
     0.900, P10,
-    1.000, P11, // end point
-    1.100, P12  // control point
+    1.000, P11, 
+    1.100, P12  
   }
 
 #declare Spline_2 =
   spline {
     natural_spline
-   -0.100, P13, // control point
-    0.000, P14, // starting point
+   -0.100, P13,
+    0.000, P14,
     0.100, P15,
     0.200, P16,
     0.300, P17,
@@ -104,8 +118,26 @@ plane { z, 50
     0.700, P21,
     0.800, P22,
     0.900, P23,
-    1.000, P24, // end point
-    1.100, P25  // control point
+    1.000, P24,
+    1.100, P25  
+  }
+
+#declare Spline_3 =
+  spline {
+    natural_spline
+   -0.100, P26,
+    0.000, P27,
+    0.100, P28,
+    0.200, P29,
+    0.300, P30,
+    0.400, P31,
+    0.500, P32,
+    0.600, P33,
+    0.700, P34,
+    0.800, P35,
+    0.900, P36,
+    1.000, P37,
+    1.100, P38
   }
 
 intersection {
@@ -122,7 +154,6 @@ sphere{ <0,0,0>,0.66
         translate<0,0.5,0> 
         translate Spline_1(clock+0/30)
 
-       // end of sphere 
 }
 
 intersection {
@@ -135,12 +166,33 @@ sphere{ <0,0,0>,0.66
        pigment{rgb<0.8,0.8,0.8>*0.05}
        finish {phong 1 reflection{ 0.1 metallic 0.25}}
     } }
-    rotate <0, 0, -clock*360>
+    rotate <clock*360, 0, 0>
         translate<0,0.5,0>
         translate Spline_2(clock+0/30)
 
-       // end of sphere
 }
+
+#if ( clock >= 0.25 )
+  sphere {
+    <0,0,0>,0.75
+    pigment { Clear }
+    interior { ior 1.6
+               }
+    finish  {
+    ambient 0.1
+    diffuse 0.1
+    reflection 0.1
+    specular 0.8
+    roughness 0.003
+    phong 1
+    phong_size 400
+    
+
+}
+  translate <0,0.75,0>
+  translate Spline_3(clock+0/15)
+    }
+#end
 
   light_source {
     <2, 4, -1>
